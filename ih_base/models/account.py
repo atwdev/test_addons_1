@@ -14,17 +14,23 @@ class AccountMove(models.Model):
 class AccountMoveLine(models.Model):
     _inherit = "account.move.line"
 
-    # @api.model
-    # def create(self, vals):
-    #     res = super(AccountMoveLine, self).create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        lines = super(AccountMoveLine, self).create(vals_list)
 
-    #     analytic_account_id = False
-    #     if res.move_id.ih_sale_order_id:
-    #         analytic_account_id = res.move_id.ih_sale_order_id.analytic_account_id
-    #     elif res.move_id.purchase_id:
-    #         analytic_account_id = res.move_id.purchase_id.ih_analytic_account_id
-
-    #     if analytic_account_id:
-    #         res.analytic_account_id = analytic_account_id
+        for line in lines:
+            line.ih_input_analytic_account_id()
         
-    #     return res
+        return res
+
+    def ih_input_analytic_account_id(self):
+        analytic_account_id = False
+        
+        if self.move_id.ih_sale_order_id:
+            analytic_account_id = self.move_id.ih_sale_order_id.analytic_account_id
+        elif self.move_id.purchase_id:
+            analytic_account_id = self.move_id.purchase_id.ih_analytic_account_id
+
+        if analytic_account_id:
+            self.analytic_account_id = analytic_account_id
+
