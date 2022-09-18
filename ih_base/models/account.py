@@ -21,11 +21,11 @@ class AccountMoveLine(models.Model):
         for line in lines:
             line.ih_input_analytic_account_id()
         
-        return res
+        return lines
 
     def ih_input_analytic_account_id(self):
         analytic_account_id = False
-        
+
         if self.move_id.ih_sale_order_id:
             analytic_account_id = self.move_id.ih_sale_order_id.analytic_account_id
         elif self.move_id.purchase_id:
