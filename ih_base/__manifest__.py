@@ -12,6 +12,7 @@
         'views/menu.xml',
         'views/dashboard.xml',
         'views/purchase_order.xml',
+        'views/project_view.xml',
         'views/res_partner.xml',
     ],
     "assets": {

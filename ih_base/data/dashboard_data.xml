@@ -11,7 +11,6 @@
     <record id="dashboard_project" model="menu.dashboard">
         <field name="name">Projects</field>
         <field name="description">This menu is for viewing projects.</field>
-        <field name="action_id" ref="project.open_view_project_all_group_stage"/>
         <field name="sequence">1</field>
     </record>
 
