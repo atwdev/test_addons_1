@@ -17,4 +17,6 @@ class IrUiMenu(models.Model):
         res.append(self.env.ref('project.menu_main_pm').id)
         res.append(self.env.ref('purchase.menu_purchase_root').id)
         res.append(self.env.ref('base.menu_board_root').id)
+        res.append(self.env.ref('project.menu_project_management').id)
+        
         return res
