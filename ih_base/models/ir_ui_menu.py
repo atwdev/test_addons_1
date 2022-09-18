@@ -24,5 +24,6 @@ class IrUiMenu(models.Model):
     @api.returns('self')
     def get_user_roots(self):
         res = super().get_user_roots()
-        res = self.env.ref('ih_base.menu_root')
+        if not self.env.user.has_group('base.group_system'):
+            return self.env.ref('ih_base.menu_root')
         return res
