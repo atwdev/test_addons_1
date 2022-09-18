@@ -5,8 +5,13 @@
     "author": "Instalatur Hebat",
     "depends": ["sale_management", "purchase", "project"],
     "data": [
+        'security/ir.model.access.csv',
+
+        'data/dashboard_data.xml',
+
         'views/dashboard.xml',
         'views/purchase_order.xml',
+        'views/res_partner.xml',
     ],
     "installable": True,
 }

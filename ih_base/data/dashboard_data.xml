@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="dashboard_contact" model="menu.dashboard">
+        <field name="name">Contacts</field>
+        <field name="description">This menu is for viewing contacts.</field>
+        <field name="action_id" ref="contacts.action_contacts"/>
+        <field name="sequence">0</field>
+    </record>
+
+    <record id="dashboard_project" model="menu.dashboard">
+        <field name="name">Projects</field>
+        <field name="description">This menu is for viewing projects.</field>
+        <field name="action_id" ref="project.open_view_project_all_group_stage"/>
+        <field name="sequence">1</field>
+    </record>
+
+</odoo>
