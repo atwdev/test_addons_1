@@ -9,6 +9,7 @@ class AccountMove(models.Model):
     _inherit = "account.move"
 
     ih_sale_order_id = fields.Many2one('sale.order', string='IH Sale Order')
+    ih_purchase_id = fields.Many2one('purchase.order', string='IH Purchase Order')
 
 
 class AccountMoveLine(models.Model):
@@ -28,8 +29,8 @@ class AccountMoveLine(models.Model):
 
         if self.move_id.ih_sale_order_id:
             analytic_account_id = self.move_id.ih_sale_order_id.analytic_account_id
-        elif self.move_id.purchase_id:
-            analytic_account_id = self.move_id.purchase_id.ih_analytic_account_id
+        elif self.move_id.ih_purchase_id:
+            analytic_account_id = self.move_id.ih_purchase_id.ih_analytic_account_id
 
         if analytic_account_id:
             self.analytic_account_id = analytic_account_id
