@@ -9,6 +9,7 @@
 
         'data/dashboard_data.xml',
 
+        'views/menu.xml',
         'views/dashboard.xml',
         'views/purchase_order.xml',
         'views/res_partner.xml',
