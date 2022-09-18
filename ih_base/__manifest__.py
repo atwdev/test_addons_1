@@ -3,7 +3,7 @@
     "version": "1.0",
     "summary": "Instalatur Hebat Base",
     "author": "Instalatur Hebat",
-    "depends": ["sale_management", "purchase", "project"],
+    "depends": ["contacts", "sale_management", "purchase", "project"],
     "data": [
         'security/ir.model.access.csv',
 
