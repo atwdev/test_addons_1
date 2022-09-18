@@ -9,12 +9,12 @@ class IrUiMenu(models.Model):
 
     def _load_menus_blacklist(self):
         res = super()._load_menus_blacklist()
-        if not self.env.user.has_group('base.group_system'):
-            res.append(self.env.ref('mail.menu_root_discuss').id)
-            res.append(self.env.ref('contacts.menu_contacts').id)
-            res.append(self.env.ref('sale.sale_menu_root').id)
-            res.append(self.env.ref('account.menu_finance').id)
-            res.append(self.env.ref('project.menu_main_pm').id)
-            res.append(self.env.ref('purchase.menu_purchase_root').id)
-            res.append(self.env.ref('base.menu_board_root').id)
+        # if not self.env.user.has_group('base.group_system'):
+        res.append(self.env.ref('mail.menu_root_discuss').id)
+        res.append(self.env.ref('contacts.menu_contacts').id)
+        res.append(self.env.ref('sale.sale_menu_root').id)
+        res.append(self.env.ref('account.menu_finance').id)
+        res.append(self.env.ref('project.menu_main_pm').id)
+        res.append(self.env.ref('purchase.menu_purchase_root').id)
+        res.append(self.env.ref('base.menu_board_root').id)
         return res
