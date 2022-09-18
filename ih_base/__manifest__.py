@@ -5,7 +5,7 @@
     "author": "Instalatur Hebat",
     "depends": ["sale_management", "purchase", "project"],
     "data": [
-
+        'views/purchase_order.xml',
     ],
     "installable": True,
 }

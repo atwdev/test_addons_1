@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="purchase_order_form_ext" model="ir.ui.view">
+        <field name="name">ih.purchase.order.form</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='invoice_info']" position="inside">
+                <field name="ih_analytic_account_id" options="{'no_create': True}" string="Analytic Account"
+                       attrs="{'readonly': ['|', ('invoice_status','=', 'invoiced'), ('state', '=', 'done')]}"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
