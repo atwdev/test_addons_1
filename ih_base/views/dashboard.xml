@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <menuitem
+        id="menu_root"
+        name="Instalatur Hebat"
+        web_icon="ih_base,static/description/icon.png"
+        sequence="1"/>
+
+    <record id="menu_dashboard_view_kanban" model="ir.ui.view">
+        <field name="name">menu.dashboard.kanban</field>
+        <field name="model">menu.dashboard</field>
+        <field name="priority">1</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_dashboard o_menu_dashboard_kanban">
+                <field name="button_id" readonly="1"/>
+                <field name="button_text"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div>
+                            <t t-call="DashboardTop"/>
+                            <div class="container o_kanban_card_content">
+                                <div class="row">
+                                  <div class="col-12 o_kanban_primary_left mb-2" t-if="record.button_id.raw_value">
+                                      <button class="btn btn-primary" name="open_button" type="object">
+                                          <span><t t-esc="record.button_text.value"/></span>
+                                      </button>
+                                  </div>
+                                  <div class="col-12">
+                                      <field name="description"/>
+                                  </div>
+                                </div>
+                            </div>
+                            <div class="container o_kanban_card_manage_pane dropdown-menu" role="menu">
+                                <t t-call="DashboardManage"/>
+                            </div>
+                        </div>
+                    </t>
+                    
+                    <t t-name="DashboardTop">
+                        <div t-attf-class="o_kanban_card_header">
+                            <div class="o_kanban_card_header_title">
+                                <div class="o_primary">
+                                    <a type="object" name="open_action"><field name="name"/></a>
+                                </div>
+                            </div>
+                            <div class="o_kanban_manage_button_section">
+                                <a class="o_kanban_manage_toggle_button" href="#"><i class="fa fa-ellipsis-v" aria-label="Selection" role="img" title="Selection"/></a>
+                            </div>
+                        </div>
+                    </t>
+                    
+                    <t t-name="DashboardManage">
+                      <div groups="base.group_system" t-if="widget.editable" class="row o_kanban_card_manage_settings">
+                          <div class="col-6">
+                          </div>
+                          <div class="col-6 text-right" role="menuitem">
+                              <a role="menuitem" class="dropdown-item" type="edit">Configuration</a>
+                          </div>
+                      </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="menu_dashboard_view_form" model="ir.ui.view">
+        <field name="name">menu.dashboard.form</field>
+        <field name="model">menu.dashboard</field>
+        <field name="priority">1</field>
+        <field name="arch" type="xml">
+            <form string="Menu Dashboard">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1><field name="name" placeholder="e.g. Operation Name" readonly="1"/></h1>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="menu_dashboard_view_tree" model="ir.ui.view">
+        <field name="name">menu.dashboard.tree</field>
+        <field name="model">menu.dashboard</field>
+        <field name="priority">1</field>
+        <field name="arch" type="xml">
+            <tree string="Menu Dashboard">
+                <field name="sequence" widget="handle"/>
+                <field name="name" readonly="1"/>
+                <field name="parent_id" readonly="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_view_dashboard">
+        <field name="name">Dashboard</field>
+        <field name="res_model">menu.dashboard</field>
+        <field name="view_mode">kanban,form</field>
+        <field name="domain">[('parent_id', '=', False)]</field>
+    </record>
+
+    <menuitem
+        id="menu_dashboard"
+        name="Dashboard"
+        action="action_view_dashboard"
+        parent="menu_root"
+        sequence="1"/>
+
+</odoo>
