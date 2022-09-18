@@ -1,0 +1,18 @@
+.o_kanban_view.o_kanban_dashboard.o_menu_dashboard_kanban {
+
+    &.o_kanban_ungrouped {
+        .o_kanban_record {
+            width: 450px;
+        }
+    }
+
+    .o_kanban_group {
+        &:not(.o_column_folded) {
+            width: 450px + 2*$o-kanban-group-padding;
+
+            @include media-breakpoint-down(sm) {
+                width: 100%;
+            }
+        }
+    }
+}

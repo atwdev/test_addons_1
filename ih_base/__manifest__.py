@@ -13,5 +13,10 @@
         'views/purchase_order.xml',
         'views/res_partner.xml',
     ],
+    "assets": {
+        'web.assets_backend': [
+            'ih_base/static/src/scss/menu_dashboard.scss',
+        ],
+    },
     "installable": True,
 }
