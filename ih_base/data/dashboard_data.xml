@@ -9,7 +9,7 @@
     </record>
 
     <record id="dashboard_project" model="menu.dashboard">
-        <field name="name">Projects</field>
+        <field name="name">Projects (Sales &amp; Purchaes)</field>
         <field name="description">
         This menu is for viewing projects.
         All sales and purchase activities related to projects are managed through this menu.</field>
