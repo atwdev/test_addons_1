@@ -8,7 +8,6 @@
             <kanban class="oe_background_grey o_kanban_dashboard o_project_kanban o_emphasize_colors" on_create="project.open_create_project" js_class="project_project_kanban" sample="1">
                 <field name="name"/>
                 <field name="partner_id"/>
-                <field name="commercial_partner_id"/>
                 <field name="color"/>
                 <field name="task_count"/>
                 <field name="label_tasks"/>
@@ -18,7 +17,7 @@
                 <field name="is_favorite"/>
                 <field name="rating_percentage_satisfaction"/>
                 <field name="rating_status"/>
-                <field name="rating_active" />
+                <field name="rating_active"/>
                 <field name="analytic_account_id"/>
                 <field name="date"/>
                 <field name="doc_count"/>
@@ -26,79 +25,18 @@
                 <field name="last_update_color"/>
                 <field name="last_update_status"/>
                 <field name="tag_ids"/>
-                <progressbar field="last_update_status" colors='{"on_track": "success", "at_risk": "warning", "off_track": "danger", "on_hold": "info"}'/>
+                <progressbar field="last_update_status" colors="{&quot;on_track&quot;: &quot;success&quot;, &quot;at_risk&quot;: &quot;warning&quot;, &quot;off_track&quot;: &quot;danger&quot;, &quot;on_hold&quot;: &quot;info&quot;}"/>
                 <templates>
                     <t t-name="kanban-box">
                         <div t-attf-class="#{kanban_color(record.color.raw_value)} oe_kanban_global_click o_has_icon oe_kanban_content oe_kanban_card">
                             <div class="o_project_kanban_main ">
-                                <div class="o_kanban_card_content mw-100">
-                                    <div class="o_kanban_primary_left">
-                                        <div class="o_primary">
-                                            <span class="o_text_overflow"><t t-esc="record.name.value"/></span>
-                                            <span class="o_text_overflow text-muted" t-if="record.partner_id.value">
-                                                <span class="fa fa-user mr-2" aria-label="Partner" title="Partner"></span><t t-esc="record.partner_id.value"/>
-                                            </span>
-                                            <div t-if="record.date.raw_value or record.date_start.raw_value" class="text-muted o_row">
-                                                <span class="fa fa-clock-o mr-2" title="Dates"></span><field name="date_start"/>
-                                                <i t-if="record.date.raw_value and record.date_start.raw_value" class="fa fa-long-arrow-right mx-2 oe_read_only" aria-label="Arrow icon" title="Arrow"/>
-                                                <field name="date"/>
-                                            </div>
-                                            <div t-if="record.alias_name.value and record.alias_domain.value" class="text-muted">
-                                                <span class="fa fa-envelope-o mr-2" aria-label="Domain Alias" title="Domain Alias"></span><t t-esc="record.alias_id.value"/>
-                                            </div>
-                                            <div t-if="record.rating_active.raw_value" class="text-muted" title="Percentage of happy ratings over the past 30 days." groups="project.group_project_rating">
-                                                <b>
-                                                    <t t-if="record.rating_percentage_satisfaction.value != -1">
-                                                        <i class="fa fa-smile-o" role="img" aria-label="Percentage of satisfaction" title="Percentage of satisfaction"/> <t t-esc="record.rating_percentage_satisfaction.value"/>%
-                                                    </t>
-                                                </b>
-                                            </div>
-                                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
-                                        </div>
-                                    </div>
+                                <t t-call="ProjectTop"/>
+                                <div class="o_kanban_card_content container">
+                                    <t t-call="ProjectContent"/>
                                 </div>
                                 <div class="container o_kanban_card_manage_pane dropdown-menu" role="menu" groups="base.group_user">
-                                    <div class="row">
-                                        <div class="col-6 o_kanban_card_manage_section o_kanban_manage_view">
-                                            <div role="menuitem" class="o_kanban_card_manage_title">
-                                                <span>View</span>
-                                            </div>
-                                            <div role="menuitem">
-                                                <a name="action_view_tasks" type="object">Tasks</a>
-                                            </div>
-                                            <div role="menuitem" t-if="record.doc_count.raw_value">
-                                                <a name="attachment_tree_view" type="object">Documents</a>
-                                            </div>
-                                        </div>
-                                        <div class="col-6 o_kanban_card_manage_section o_kanban_manage_reporting" groups="project.group_project_manager">
-                                            <div role="menuitem" class="o_kanban_card_manage_title">
-                                                <span>Reporting</span>
-                                            </div>
-                                            <div role="menuitem">
-                                                <a name="action_view_tasks_analysis" type="object">Tasks Analysis</a>
-                                            </div>
-                                            <div role="menuitem">
-                                                <a name="%(project.action_project_task_burndown_chart_report)d" type="action">Burndown Chart</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="o_kanban_card_manage_settings row" groups="project.group_project_manager">
-                                        <div role="menuitem" aria-haspopup="true" class="col-8">
-                                            <ul class="oe_kanban_colorpicker" data-field="color" role="popup"/>
-                                        </div>
-                                        <div role="menuitem" class="col-4">
-                                            <a t-if="record.privacy_visibility.raw_value == 'portal'" class="dropdown-item" role="menuitem" name="%(project.project_share_wizard_action)d" type="action">Share</a>
-                                            <!-- [XBO] TODO: remove the name attribute in this a tag in master -->
-                                            <a class="dropdown-item" role="menuitem" type="edit" name="action_view_kanban_project">Edit</a>
-                                        </div>
-                                    </div>
+                                    <t t-call="ProjectManage"/>
                                 </div>
-                                <a class="o_kanban_manage_toggle_button o_dropdown_kanban" href="#" groups="base.group_user">
-                                    <i class="fa fa-ellipsis-v" role="img" aria-label="Manage" title="Manage"/>
-                                </a>
-                                <span>
-                                    <field name="is_favorite" widget="boolean_favorite" nolabel="1" force_save="1" />
-                                </span>
                             </div>
                             <div class="o_kanban_record_bottom mt-3">
                                 <div class="oe_kanban_bottom_left">
@@ -113,10 +51,75 @@
                                     <field name="activity_ids" widget="kanban_activity"/>
                                 </div>
                                 <div class="oe_kanban_bottom_right">
-                                    <span t-att-class="'o_status_bubble mx-0 o_color_bubble_' + record.last_update_color.value" t-att-title="record.last_update_status.value"></span>
+                                    <span t-att-class="'o_status_bubble mx-0 o_color_bubble_' + record.last_update_color.value" t-att-title="record.last_update_status.value"/>
                                     <field name="user_id" widget="many2one_avatar_user" t-if="record.user_id.raw_value"/>
                                 </div>
                             </div>
+                        </div>
+                    </t>
+                    
+                    <t t-name="ProjectTop">
+                      <div t-attf-class="o_kanban_card_header">
+                          <div class="o_kanban_card_header_title">
+                              <div class="o_primary">
+                                  <span class="o_text_overflow"><t t-esc="record.name.value"/></span>
+                              </div>
+                              <div>
+                                <span class="o_text_overflow text-muted" t-if="record.partner_id.value">
+                                      <span class="fa fa-user mr-2" aria-label="Partner" title="Partner"/><t t-esc="record.partner_id.value"/>
+                                  </span>
+                                  <div t-if="record.date.raw_value or record.date_start.raw_value" class="text-muted o_row">
+                                      <span class="fa fa-clock-o mr-2" title="Dates"/><field name="date_start"/>
+                                      <i t-if="record.date.raw_value and record.date_start.raw_value" class="fa fa-long-arrow-right mx-2 oe_read_only" aria-label="Arrow icon" title="Arrow"/>
+                                      <field name="date"/>
+                                  </div>
+                              </div>
+                          </div>
+                          <a class="o_kanban_manage_toggle_button o_dropdown_kanban" href="#" groups="base.group_user">
+                              <i class="fa fa-ellipsis-v" role="img" aria-label="Manage" title="Manage"/>
+                          </a>
+                          <span>
+                              <field name="is_favorite" widget="boolean_favorite" nolabel="1" force_save="1"/>
+                          </span>
+                      </div>
+                    </t>
+                    
+                    <t t-name="ProjectManage">
+                      <div class="o_kanban_card_manage_settings row" groups="project.group_project_manager">
+                          <div class="col-6">
+                          </div>
+                          <div role="menuitem" class="col-6">
+                              <a class="dropdown-item" role="menuitem" type="edit" name="action_view_kanban_project">Edit</a>
+                          </div>
+                      </div>
+                    </t>
+                    
+                    <t t-name="ProjectContent">
+                        <div class="row o_kanban_primary_left">
+                          <div class="col overflow-hidden text-left">
+                              <button class="btn btn-primary" name="action_view_kanban_project" type="object">
+                                <span><field name="ih_so_count"/></span>
+                                <span> Sales Order</span>
+                              </button>
+                          </div>
+                          <div class="col-auto text-right">
+                              <span>
+                                <field name="ih_so_total"/>
+                              </span>
+                          </div>
+                        </div>
+                        <div class="row o_kanban_primary_left">
+                          <div class="col overflow-hidden text-left">
+                              <button class="btn btn-primary" name="action_view_kanban_project" type="object">
+                                <span><field name="ih_po_count"/></span>
+                                <span> Purchase Order</span>
+                              </button>
+                          </div>
+                          <div class="col-auto text-right">
+                              <span>
+                                <field name="ih_po_total"/>
+                              </span>
+                          </div>
                         </div>
                     </t>
                 </templates>
