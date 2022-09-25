@@ -19,4 +19,8 @@
         </field>
     </record>
 
+    <record id="ih_base.dashboard_project" model="menu.dashboard">
+        <field name="action_id" ref="action_project_all_group_stage"/>
+    </record>
+
 </odoo>

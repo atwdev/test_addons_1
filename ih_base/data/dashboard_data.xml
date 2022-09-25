@@ -10,9 +10,17 @@
 
     <record id="dashboard_project" model="menu.dashboard">
         <field name="name">Projects</field>
-        <field name="description">This menu is for viewing projects.
-        All sales order and purchase order related to projects are created through this menu.</field>
+        <field name="description">
+        This menu is for viewing projects.
+        All sales and purchase activities related to projects are managed through this menu.</field>
         <field name="sequence">1</field>
+    </record>
+
+    <record id="dashboard_purchase" model="menu.dashboard">
+        <field name="name">Purchases (Non-Project)</field>
+        <field name="description">
+        This menu is for managing non-project purchase/expenses.</field>
+        <field name="sequence">2</field>
     </record>
 
 </odoo>
