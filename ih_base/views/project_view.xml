@@ -97,27 +97,27 @@
                     <t t-name="ProjectContent">
                         <div class="row o_kanban_primary_left">
                           <div class="col overflow-hidden text-left">
-                              <button class="btn btn-primary" name="action_view_kanban_project" type="object">
+                              <button class="btn btn-primary" name="ih_action_view_sale_order" type="object">
                                 <span><field name="ih_so_count"/></span>
                                 <span> Sales Order</span>
                               </button>
                           </div>
                           <div class="col-auto text-right">
                               <span>
-                                <field name="ih_so_total"/>
+                                <field name="ih_so_total" widget='monetary' options="{'currency_field': 'currency_id'}"/>
                               </span>
                           </div>
                         </div>
                         <div class="row o_kanban_primary_left">
                           <div class="col overflow-hidden text-left">
-                              <button class="btn btn-primary" name="action_view_kanban_project" type="object">
+                              <button class="btn btn-primary" name="ih_action_view_purchase_order" type="object">
                                 <span><field name="ih_po_count"/></span>
                                 <span> Purchase Order</span>
                               </button>
                           </div>
                           <div class="col-auto text-right">
                               <span>
-                                <field name="ih_po_total"/>
+                                <field name="ih_po_total" widget='monetary' options="{'currency_field': 'currency_id'}"/>
                               </span>
                           </div>
                         </div>

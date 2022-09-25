@@ -43,3 +43,11 @@ class Project(models.Model):
             project.ih_so_total = sum(sales_order_ids.mapped('amount_total')) if sales_order_ids else 0
             project.ih_po_count = len(purchase_order_ids)
             project.ih_po_total = sum(purchase_order_ids.mapped('amount_total')) if purchase_order_ids else 0
+
+    def ih_action_view_sale_order(self):
+        action = self.env.ref('ih_base.action_sale_order').read()[0]
+        return action
+
+    def ih_action_view_purchase_order(self):
+        action = self.env.ref('ih_base.action_purchase_order').read()[0]
+        return action
