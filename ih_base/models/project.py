@@ -46,8 +46,13 @@ class Project(models.Model):
 
     def ih_action_view_sale_order(self):
         action = self.env.ref('ih_base.action_sale_order').read()[0]
+        action['domain'] = [('default_analytic_account_id', '=', self.analytic_account_id.id)]
+        action['context'] = dict(analytic_account_id=self.analytic_account_id.id)
         return action
 
     def ih_action_view_purchase_order(self):
         action = self.env.ref('ih_base.action_purchase_order').read()[0]
+        action['domain'] = [('default_ih_analytic_account_id', '=', self.analytic_account_id.id)]
+        action['context'] = dict(ih_analytic_account_id=self.analytic_account_id.id)
         return action
+        

@@ -8,6 +8,7 @@
             <kanban class="oe_background_grey o_kanban_dashboard o_project_kanban o_emphasize_colors" on_create="project.open_create_project" js_class="project_project_kanban" sample="1">
                 <field name="name"/>
                 <field name="partner_id"/>
+                <field name="currency_id"/>
                 <field name="color"/>
                 <field name="task_count"/>
                 <field name="label_tasks"/>
