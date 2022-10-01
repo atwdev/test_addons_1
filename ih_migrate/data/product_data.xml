@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+
+        <record id="product_installation_service" model="product.product">
+            <field name="name">Installation Service</field>
+            <field name="type">service</field>
+            <field name="purchase_method">purchase</field>
+            <field name="sale_ok" eval="True"/>
+            <field name="purchase_ok" eval="True"/>
+            <field name="categ_id" ref="product.product_category_all"/>
+        </record>
+
+        <record id="product_man_power" model="product.product">
+            <field name="name">Man Power</field>
+            <field name="type">service</field>
+            <field name="purchase_method">purchase</field>
+            <field name="sale_ok" eval="True"/>
+            <field name="purchase_ok" eval="True"/>
+            <field name="categ_id" ref="product.product_category_all"/>
+        </record>
+
+        <record id="product_akom" model="product.product">
+            <field name="name">Akomodasi</field>
+            <field name="type">service</field>
+            <field name="purchase_method">purchase</field>
+            <field name="sale_ok" eval="True"/>
+            <field name="purchase_ok" eval="True"/>
+            <field name="categ_id" ref="product.product_category_all"/>
+        </record>
+
+        <record id="product_material" model="product.product">
+            <field name="name">Material</field>
+            <field name="type">consu</field>
+            <field name="purchase_method">purchase</field>
+            <field name="sale_ok" eval="True"/>
+            <field name="purchase_ok" eval="True"/>
+            <field name="categ_id" ref="product.product_category_all"/>
+        </record>
+
+        <record id="product_transport" model="product.product">
+            <field name="name">Transport</field>
+            <field name="type">service</field>
+            <field name="purchase_method">purchase</field>
+            <field name="sale_ok" eval="True"/>
+            <field name="purchase_ok" eval="True"/>
+            <field name="categ_id" ref="product.product_category_all"/>
+        </record>
+
+    </data>
+</odoo>

@@ -18,9 +18,9 @@ class AccountMoveLine(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         lines = super(AccountMoveLine, self).create(vals_list)
-
         for line in lines:
-            line.ih_input_analytic_account_id()
+            if not line.exclude_from_invoice_tab:
+                line.ih_input_analytic_account_id()
         
         return lines
 

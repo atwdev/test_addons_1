@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="0">
+    <function model="res.company" name="ih_change_tax_ids">
+        <value eval="[ref('base.main_company')]"/>
+    </function>
+</odoo>

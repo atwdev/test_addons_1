@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="partner_atw_sejahtera" model="res.partner">
+        <field name="name">PT ATW Sejahtera</field>
+        <field name="street">Jl. Darmawangsa VI No.31</field>
+        <field name="city">Jakarta Selatan</field>
+        <field name="country_id" ref="base.id"/>
+        <field name="state_id" ref="base.state_id_jk"/>
+        <field name="zip">12160</field>
+        <field name="phone">+62 21 27096892</field>
+        <field name="email"></field>
+        <field name="website"></field>
+    </record>
+
+    <record id="partner_vendor" model="res.partner">
+        <field name="name">Vendor Instalatur Hebat</field>
+        <field name="street">Indonesia</field>
+        <field name="country_id" ref="base.id"/>
+    </record>
+
+</odoo>
