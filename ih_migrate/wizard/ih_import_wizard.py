@@ -206,7 +206,7 @@ class IHImportWizard(models.TransientModel):
             'payment_date': sale_order_id.date_order.date(),
             'amount': float(line[6]) * 0.98,
             'payment_difference_handling': 'reconcile',
-            'writeoff_account_id': self.env.ref('l10n_id.1_a_1_151002').id,
+            'writeoff_account_id': self.env.ref('l10n_id.1_l10n_id_11510030').id,
             'writeoff_label': 'PPH 23',
         })
         payment_register_id.action_create_payments()
@@ -288,7 +288,7 @@ class IHImportWizard(models.TransientModel):
 
     def _get_account_account(self, line):
         if line[4] == 'Adm dan Bunga Bank':
-            return self.env.ref('l10n_id.1_a_6_511002')
+            return self.env.ref('l10n_id.1_l10n_id_65110020')
         elif line[4] == 'Bank Mandiri':
             journal_id = self.env['account.journal'].search([
                 ('type', '=', 'bank'),
@@ -302,15 +302,15 @@ class IHImportWizard(models.TransientModel):
             ], limit=1)
             return journal_id.default_account_id
         elif line[4] == 'Pendapatan Bunga':
-            return self.env.ref('l10n_id.1_a_8_110001')
+            return self.env.ref('l10n_id.1_l10n_id_81100010')
         elif line[4] == 'Piutang Usaha':
-            return self.env.ref('l10n_id.1_a_1_121001')
+            return self.env.ref('l10n_id.1_l10n_id_11210010')
         elif line[4] == 'General':
-            return self.env.ref('l10n_id.1_a_6_900000')
+            return self.env.ref('l10n_id.1_l10n_id_69000000')
         elif line[4] == 'Salary':
-            return self.env.ref('l10n_id.1_a_6_110001')
+            return self.env.ref('l10n_id.1_l10n_id_61100010')
         elif line[4] == 'Pajak Pendapatan':
-            return self.env.ref('l10n_id.1_a_6_511008')
+            return self.env.ref('l10n_id.1_l10n_id_65110070')
 
     def _post_account_move(self):
         JournalEntry = self.env['account.move']
