@@ -16,6 +16,8 @@
                     <group>
                         <button name="import_file" type="object"
                                 string="Import File" class="oe_highlight"/>
+                        <button name="action_input_statement" type="object"
+                                string="Input Statement" class="oe_highlight"/>
                     </group>
                 </form>
             </field>

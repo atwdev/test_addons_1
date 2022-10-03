@@ -365,3 +365,65 @@ class IHImportWizard(models.TransientModel):
                         'balance_end_real': previous_balance_end + statement_id.total_entry_encoding})
             statement_id.button_post()
             previous_balance_end = statement_id.balance_end
+
+    def _input_get_statement_id(self, partner_type, journal_type):
+        if journal_type == 'cash':
+            Statement = self.env['account.bank.statement'].with_context(journal_type='cash')
+        elif journal_type == 'bank':
+            Statement = self.env['account.bank.statement'].with_context(journal_type='bank')
+
+        if partner_type == 'customer':
+            name = 'IH Customer Payment'
+        elif partner_type == 'supplier':
+            name = 'IH Vendor Payment'
+
+        if journal_type == 'cash':
+            name = '%s %s' % (name, 'Cash')
+        elif journal_type == 'bank':
+            name = '%s %s' % (name, 'Bank')
+
+        statement_id = Statement.search([
+            ('name', '=', name),
+            ('journal_type', '=', journal_type),
+        ])
+        if not statement_id:
+            statement_id = Statement.create({
+                'name': name,
+                'date': datetime.date(2022, 9, 16),
+            })
+
+        return statement_id
+
+
+    def action_input_statement(self):
+
+        self._type_action_input_statement('customer', 'bank')
+        self._type_action_input_statement('customer', 'cash')
+        self._type_action_input_statement('supplier', 'bank')
+        self._type_action_input_statement('supplier', 'cash')
+
+
+    def _type_action_input_statement(self, partner_type, journal_type):
+        multiplier = 1 if partner_type == 'customer' else -1
+        Payment = self.env['account.payment']
+        payment_ids = Payment.search([
+            ('partner_type', '=', partner_type),
+            ('is_internal_transfer', '=', False),
+            ('journal_type', '=', journal_type),
+        ])
+        statement_id = self._input_get_statement_id(partner_type, journal_type)
+        line_ids = []
+
+        for record in payment_ids:
+            line_id = statement_id.line_ids.filtered(lambda x: x.payment_ref == record.name)
+            if line_id:
+                continue
+            line_ids.append((0, 0, {
+                'payment_ref': record.name,
+                'amount': record.amount * multiplier
+            }))
+
+        if line_ids:
+            statement_id.write({
+                'line_ids': line_ids
+            })
