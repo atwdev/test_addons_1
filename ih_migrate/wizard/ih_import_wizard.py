@@ -26,6 +26,8 @@ try:
 except ImportError:
     _logger.debug('Cannot `import xlrd`.')
 
+start_line = 1
+end_line = 1000
 
 class IHImportWizard(models.TransientModel):
     _name = 'ih.import.wizard'
@@ -71,6 +73,7 @@ class IHImportWizard(models.TransientModel):
         if not sheet:
             return True
         # line_count = 0
+        last_line_id = 0
         for row_no in range(sheet.nrows):
             val = {}
             values = {}
@@ -82,6 +85,9 @@ class IHImportWizard(models.TransientModel):
                 line = list(map(
                     lambda row: isinstance(row.value, bytes) and row.value.encode('utf-8') or str(
                         row.value), sheet.row(row_no)))
+                last_line_id = int(float(line[8]))
+                if last_line_id < start_line or last_line_id > end_line:
+                    continue
                 print('IH ID ', line)
                 if line[1] == 'Pendapatan':
                     if line[6] and float(line[6]) > 0:
@@ -99,7 +105,8 @@ class IHImportWizard(models.TransientModel):
                     elif line[6] and float(line[6]) > 0:
                         self._process_line_register_payment(line)
             # line_count += 1
-        self._post_account_bank_statement()
+        if last_line_id == 4500:
+            self._post_account_bank_statement()
         return {'type': 'ir.actions.client', 'tag': 'reload'}
 
     def _process_line_hpp_purchase(self, line):
