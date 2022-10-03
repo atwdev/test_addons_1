@@ -405,6 +405,7 @@ class IHImportWizard(models.TransientModel):
 
     def _type_action_input_statement(self, partner_type, journal_type):
         multiplier = 1 if partner_type == 'customer' else -1
+        partner_id = self.env.ref('ih_migrate.partner_atw_sejahtera') if partner_type == 'customer' else self.env.ref('ih_migrate.partner_vendor')
         Payment = self.env['account.payment']
         payment_ids = Payment.search([
             ('partner_type', '=', partner_type),
@@ -420,6 +421,7 @@ class IHImportWizard(models.TransientModel):
                 continue
             line_ids.append((0, 0, {
                 'payment_ref': record.name,
+                'partner_id': partner_id.id,
                 'amount': record.amount * multiplier
             }))
 
