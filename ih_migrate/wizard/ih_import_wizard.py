@@ -85,8 +85,8 @@ class IHImportWizard(models.TransientModel):
                 line = list(map(
                     lambda row: isinstance(row.value, bytes) and row.value.encode('utf-8') or str(
                         row.value), sheet.row(row_no)))
-                last_line_id = int(float(line[8]))
-                if last_line_id < start_line or last_line_id > end_line:
+                line_id = int(float(line[8]))
+                if line_id < start_line or line_id > end_line:
                     continue
                 print('IH ID ', line)
                 if line[1] == 'Pendapatan':
@@ -104,6 +104,7 @@ class IHImportWizard(models.TransientModel):
                         self._process_line_other_bill(line)
                     elif line[6] and float(line[6]) > 0:
                         self._process_line_register_payment(line)
+                last_line_id = line_id
             # line_count += 1
         if last_line_id == 4500:
             self._post_account_bank_statement()
