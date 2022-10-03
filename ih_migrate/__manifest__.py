@@ -6,7 +6,7 @@
     'version': '1.0',
     'author': 'Chairiman',
     'license': 'GPL-3',
-    'depends': ['ih_base', 'l10n_id'],
+    'depends': ['ih_base'],
     'data': [
         'security/ir.model.access.csv',
 
