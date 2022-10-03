@@ -389,7 +389,7 @@ class IHImportWizard(models.TransientModel):
         if not statement_id:
             statement_id = Statement.create({
                 'name': name,
-                'date': datetime.date(2022, 9, 16),
+                'date': datetime(2022, 9, 16),
             })
 
         return statement_id
