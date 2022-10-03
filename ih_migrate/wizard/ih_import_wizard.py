@@ -219,7 +219,7 @@ class IHImportWizard(models.TransientModel):
             amount = float(line[6]) * 0.98
             write_vals['amount'] = amount
             write_vals['payment_difference_handling'] = 'reconcile'
-            write_vals['writeoff_account_id'] = self.env.ref('l10n_id.1_a_1_151002').id
+            write_vals['writeoff_account_id'] = self.env.ref('l10n_id.1_l10n_id_11510030').id
             write_vals['writeoff_label'] = 'PPH 23'
         payment_register_id.write(write_vals)
         payment_register_id.action_create_payments()
@@ -292,11 +292,11 @@ class IHImportWizard(models.TransientModel):
 
     def _get_account_account(self, line):
         if line[4] == 'General':
-            return self.env.ref('l10n_id.1_a_6_900000')
+            return self.env.ref('l10n_id.1_l10n_id_69000000')
         elif line[4] == 'Salary':
-            return self.env.ref('l10n_id.1_a_6_110001')
+            return self.env.ref('l10n_id.1_l10n_id_61100010')
         elif line[4] == 'Pajak Pendapatan':
-            return self.env.ref('l10n_id.1_a_6_511008')
+            return self.env.ref('l10n_id.1_l10n_id_65110070')
         else:
             return False
 
