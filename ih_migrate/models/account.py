@@ -12,6 +12,7 @@ class AccountMove(models.Model):
     ih_category = fields.Char()
     ih_month = fields.Char()
     ih_year = fields.Char()
+    ih_migrate_id = fields.Integer()
 
     def _check_balanced(self):
         if self.env.context.get('ih_migrate'):
@@ -24,7 +25,37 @@ class AccountMove(models.Model):
             balance += round(line.debit - line.credit)
         return balance
 
+
 class AccountMoveLine(models.Model):
     _inherit = "account.move.line"
+
+    ih_migrate_id = fields.Integer()
+
+
+class AccountBankStatement(models.Model):
+    _inherit = "account.bank.statement"
+
+    ih_month = fields.Float()
+    ih_year = fields.Float()
+
+    def ih_update_cash_balance(self):
+        previous_month = (self.ih_month - 1) if self.ih_month != 1 else 12
+        previous_year = self.ih_year if self.ih_month != 1 else (self.ih_year - 1)
+        previous_statement_id = self.env['account.bank.statement'].search([
+            ('ih_month', '=', previous_month),
+            ('ih_year', '=', previous_year),
+            ('journal_id', '=', self.journal_id.id),
+        ])
+        balance_start = 0
+        if previous_statement_id:
+            balance_start = previous_statement_id.balance_end_real
+        self.write({
+            'balance_start': balance_start,
+            'balance_end_real': balance_start + self.balance_end
+        })
+
+
+class AccountBankStatementLine(models.Model):
+    _inherit = "account.bank.statement.line"
 
     ih_migrate_id = fields.Integer()
