@@ -26,8 +26,8 @@ try:
 except ImportError:
     _logger.debug('Cannot `import xlrd`.')
 
-start_line = 1001
-end_line = 2000
+start_line = 2001
+end_line = 3000
 
 class IHImportWizard(models.TransientModel):
     _name = 'ih.import.wizard'
