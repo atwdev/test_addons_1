@@ -70,10 +70,12 @@ class IHImportWizard(models.TransientModel):
                                     "Date Format: %Y-%m-%d"))
         if not sheet:
             return True
-        # line_count = 0
+        line_count = 0
         for row_no in range(sheet.nrows):
-            # if line_count > 500:
-            #     break
+            val = {}
+            values = {}
+            if line_count > 500:
+                break
             # if row_no <= 0:
             #     fields = map(lambda row: row.value.encode('utf-8'), sheet.row(row_no))
             if row_no > 0:
@@ -96,7 +98,7 @@ class IHImportWizard(models.TransientModel):
                         self._process_line_other_bill(line)
                     elif line[6] and float(line[6]) > 0:
                         self._process_line_register_payment(line)
-            # line_count += 1
+            line_count += 1
         self._post_account_bank_statement()
         return {'type': 'ir.actions.client', 'tag': 'reload'}
 
@@ -175,20 +177,7 @@ class IHImportWizard(models.TransientModel):
         })
         if move_id.state == 'draft':
             move_id.action_post()
-        if line[7] == 'BELUM BAYAR' or move_id.payment_state != 'not_paid':
-            return True
-        payment_register_id = PaymentRegister.with_context(
-            active_model='account.move',
-            active_ids=move_id.ids).create({})
-        payment_register_id.write({
-            'payment_date': sale_order_id.date_order.date(),
-            'amount': float(line[6]) * 0.98,
-            'payment_difference_handling': 'reconcile',
-            'writeoff_account_id': self.env.ref('l10n_id.1_l10n_id_11510030').id,
-            'writeoff_label': 'PPH 23',
-        })
-        payment_register_id.action_create_payments()
-        return True
+        self._process_line_register_payment(line)
 
         return True
 
@@ -302,30 +291,62 @@ class IHImportWizard(models.TransientModel):
         return True
 
     def _get_account_account(self, line):
-        if line[4] == 'Adm dan Bunga Bank':
-            return self.env.ref('l10n_id.1_l10n_id_65110020')
-        elif line[4] == 'Bank Mandiri':
-            journal_id = self.env['account.journal'].search([
-                ('type', '=', 'bank'),
-                ('company_id', '=', self.env.ref('base.main_company').id),
-            ], limit=1)
-            return journal_id.default_account_id
-        elif line[4] == 'Kas Besar':
-            journal_id = self.env['account.journal'].search([
-                ('type', '=', 'cash'),
-                ('company_id', '=', self.env.ref('base.main_company').id),
-            ], limit=1)
-            return journal_id.default_account_id
-        elif line[4] == 'Pendapatan Bunga':
-            return self.env.ref('l10n_id.1_l10n_id_81100010')
-        elif line[4] == 'Piutang Usaha':
-            return self.env.ref('l10n_id.1_l10n_id_11210010')
-        elif line[4] == 'General':
-            return self.env.ref('l10n_id.1_l10n_id_69000000')
+        if line[4] == 'General':
+            return self.env.ref('l10n_id.1_a_6_900000')
         elif line[4] == 'Salary':
-            return self.env.ref('l10n_id.1_l10n_id_61100010')
+            return self.env.ref('l10n_id.1_a_6_110001')
         elif line[4] == 'Pajak Pendapatan':
-            return self.env.ref('l10n_id.1_l10n_id_65110070')
+            return self.env.ref('l10n_id.1_a_6_511008')
+        else:
+            return False
+
+    def _get_account_bank_statement(self, line):
+        if line[4] == 'Kas Besar':
+            Statement = self.env['account.bank.statement'].with_context(journal_type='cash')
+        elif line[4] == 'Bank Mandiri':
+            Statement = self.env['account.bank.statement'].with_context(journal_type='bank')
+        else:
+            return False
+        date = xlrd.xldate_as_datetime(float(line[0]), 0)
+        statement_id = Statement.search([
+            ('ih_month', '=', float(date.month)),
+            ('ih_year', '=', float(date.year)),
+            ('journal_id', '=', Statement._default_journal().id),
+        ])
+        if not statement_id:
+            statement_id = Statement.create({
+                'name': '%s/%s/%s' % (line[4], date.year, date.month),
+                'date': date.date(),
+                'ih_month': float(date.month),
+                'ih_year': float(date.year),
+            })
+        return statement_id
+
+    def _write_account_bank_statement(self, line, statement_id):
+        line_id = statement_id.line_ids.filtered(lambda l: l.ih_migrate_id == int(float(line[8])))
+        if line_id:
+            return True
+        amount = 0
+        if line[5] and float(line[5]) > 0:
+            amount = float(line[5])
+        elif line[6] and float(line[6]) > 0:
+            amount = -float(line[6])
+        line_value = {
+            'payment_ref': line[2],
+            'amount': amount,
+            'ih_migrate_id': int(float(line[8])),
+        }
+        statement_id.write({
+            'line_ids': [
+                (0, 0, line_value)
+            ]
+        })
+        return True
+
+    def _post_account_bank_statement(self):
+        self._sort_account_bank_statement('bank')
+        self._sort_account_bank_statement('cash')
+
 
     def _sort_account_bank_statement(self, journal_type):
         Statement = self.env['account.bank.statement']
