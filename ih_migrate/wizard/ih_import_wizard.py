@@ -366,30 +366,36 @@ class IHImportWizard(models.TransientModel):
             statement_id.button_post()
             previous_balance_end = statement_id.balance_end
 
-    def _input_get_statement_id(self, partner_type, journal_type):
-        if journal_type == 'cash':
+    def _input_get_statement_id(self, payment_id):
+        if payment_id.journal_type == 'cash':
             Statement = self.env['account.bank.statement'].with_context(journal_type='cash')
-        elif journal_type == 'bank':
+        elif payment_id.journal_type == 'bank':
             Statement = self.env['account.bank.statement'].with_context(journal_type='bank')
 
-        if partner_type == 'customer':
-            name = 'IH Customer Payment'
-        elif partner_type == 'supplier':
-            name = 'IH Vendor Payment'
+        if payment_id.partner_type == 'customer':
+            name = 'IH/CUST'
+        elif payment_id.partner_type == 'supplier':
+            name = 'IH/VEND'
 
-        if journal_type == 'cash':
-            name = '%s %s' % (name, 'Cash')
-        elif journal_type == 'bank':
-            name = '%s %s' % (name, 'Bank')
+        if payment_id.journal_type == 'cash':
+            name = '%s/%s' % (name, 'CASH')
+        elif payment_id.journal_type == 'bank':
+            name = '%s/%s' % (name, 'BANK')
+
+        name = '%s/%s/%s' % (name, payment_id.date.year, payment_id.date.month)
 
         statement_id = Statement.search([
             ('name', '=', name),
-            ('journal_type', '=', journal_type),
+            ('ih_month', '=', float(payment_id.date.month)),
+            ('ih_year', '=', float(payment_id.date.year)),
+            ('journal_type', '=', payment_id.journal_type),
         ])
         if not statement_id:
             statement_id = Statement.create({
                 'name': name,
-                'date': datetime(2022, 9, 16),
+                'date': payment_id.date,
+                'ih_month': float(payment_id.date.month),
+                'ih_year': float(payment_id.date.year),
             })
 
         return statement_id
@@ -412,20 +418,16 @@ class IHImportWizard(models.TransientModel):
             ('is_internal_transfer', '=', False),
             ('journal_type', '=', journal_type),
         ])
-        statement_id = self._input_get_statement_id(partner_type, journal_type)
-        line_ids = []
 
         for record in payment_ids:
+            statement_id = self._input_get_statement_id(record)
             line_id = statement_id.line_ids.filtered(lambda x: x.payment_ref == record.name)
             if line_id:
                 continue
-            line_ids.append((0, 0, {
-                'payment_ref': record.name,
-                'partner_id': partner_id.id,
-                'amount': record.amount * multiplier
-            }))
-
-        if line_ids:
             statement_id.write({
-                'line_ids': line_ids
+                'line_ids': [(0, 0, {
+                    'payment_ref': record.name,
+                    'partner_id': partner_id.id,
+                    'amount': record.amount * multiplier
+                })]
             })
