@@ -70,12 +70,10 @@ class IHImportWizard(models.TransientModel):
                                     "Date Format: %Y-%m-%d"))
         if not sheet:
             return True
-        line_count = 0
+        # line_count = 0
         for row_no in range(sheet.nrows):
-            val = {}
-            values = {}
-            if line_count > 500:
-                break
+            # if line_count > 500:
+            #     break
             # if row_no <= 0:
             #     fields = map(lambda row: row.value.encode('utf-8'), sheet.row(row_no))
             if row_no > 0:
@@ -98,7 +96,7 @@ class IHImportWizard(models.TransientModel):
                         self._process_line_other_bill(line)
                     elif line[6] and float(line[6]) > 0:
                         self._process_line_register_payment(line)
-            line_count += 1
+            # line_count += 1
         self._post_account_bank_statement()
         return {'type': 'ir.actions.client', 'tag': 'reload'}
 
