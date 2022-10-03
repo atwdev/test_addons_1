@@ -37,7 +37,7 @@ class AccountPayment(models.Model):
 
     journal_type = fields.Selection(related='journal_id.type',
                                     help="Technical field used for usability purposes")
-
+    ih_migrate_id = fields.Integer()
 
 class AccountBankStatement(models.Model):
     _inherit = "account.bank.statement"
