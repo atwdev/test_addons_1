@@ -17,7 +17,7 @@
     </record>
 
     <record id="dashboard_purchase" model="menu.dashboard">
-        <field name="name">Purchases (Non-Project)</field>
+        <field name="name">Bills (Non-Project)</field>
         <field name="description">
         This menu is for managing non-project purchase/expenses.</field>
         <field name="sequence">2</field>
