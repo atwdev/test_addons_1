@@ -19,7 +19,7 @@
             </p>
         </field>
     </record>
-
+<!-- 
     <record id="action_general_purchase" model="ir.actions.act_window">
         <field name="name">Purchases</field>
         <field name="type">ir.actions.act_window</field>
@@ -41,6 +41,6 @@
 
     <record id="ih_base.dashboard_purchase" model="menu.dashboard">
         <field name="action_id" ref="action_general_purchase"/>
-    </record>
+    </record> -->
 
 </odoo>

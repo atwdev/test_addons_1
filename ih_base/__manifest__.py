@@ -14,6 +14,7 @@
         'views/project_view.xml',
         'views/sale_view.xml',
         'views/purchase_view.xml',
+        'views/account_view.xml',
         'views/res_partner.xml',
     ],
     "assets": {
