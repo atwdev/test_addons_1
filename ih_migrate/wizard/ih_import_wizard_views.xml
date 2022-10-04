@@ -20,6 +20,9 @@
                                 string="Input Statement" class="oe_highlight"/>
                         <button name="import_file_transfer" type="object"
                                 string="Input Transfer" class="oe_highlight"/>
+                        <button name="action_move_project_done" type="object"
+                                string="Done Project" class="oe_highlight"/>
+                                
                     </group>
                 </form>
             </field>

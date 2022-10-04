@@ -498,3 +498,8 @@ class IHImportWizard(models.TransientModel):
                         payment_id.action_post()
 
         return {'type': 'ir.actions.client', 'tag': 'reload'}
+
+    def action_move_project_done(self):
+        project_ids = self.env['project.project'].search([])
+        for project in project_ids:
+            project.stage_id = self.env.ref('project.project_project_stage_2')
