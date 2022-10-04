@@ -22,11 +22,13 @@ class MenuDashboard(models.Model):
     child_ids = fields.One2many('menu.dashboard', 'parent_id')
 
     def open_action(self):
+        self = self.sudo()
         if not (self.action_id or self.action_server_id):
             raise UserError(_("No action for this item"))
         return self.action_id.read()[0] if self.action_id else {"type": "ir.actions.server", "id": self.action_server_id.id}
 
     def open_button(self):
+        self = self.sudo()
         if not (self.button_id or self.button_server_id):
             raise UserError(_("No button action for this item"))
         return self.button_id.read()[0] if self.button_id else {"type": "ir.actions.server", "id": self.button_server_id.id}
