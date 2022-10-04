@@ -23,4 +23,13 @@
         <field name="sequence">2</field>
     </record>
 
+    <record id="dashboard_accounting" model="menu.dashboard">
+        <field name="name">Accounting</field>
+        <field name="description">
+        This menu is for managing finance &amp; accounting.</field>
+        <field name="sequence">3</field>
+        <field name="action_id" ref="account.open_account_journal_dashboard_kanban"/>
+        
+    </record>
+
 </odoo>
