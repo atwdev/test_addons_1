@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="preview_wizard_view_form" model="ir.ui.view">
+            <field name="name">preview.wizard.form</field>
+            <field name="model">preview.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Preview wizard">
+                    <field name="url" widget="url"/>
+                    <field name="report_id" invisible="1"/>
+                    <footer>
+                        <button string="Close" class="btn-primary" special="cancel" data-hotkey="z"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_preview_wizard_all,access.preview.wizard.template.all,model_preview_wizard,,0,0,0,0
+access_preview_wizard_user,access.preview.wizard.template.user,model_preview_wizard,base.group_user,1,0,0,0
+access_preview_wizard_system,access.preview.wizard.template.system,model_preview_wizard,base.group_system,1,1,1,1
